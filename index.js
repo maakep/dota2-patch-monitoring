@@ -6,7 +6,7 @@ const { negative, positive } = require("./patchResponses");
 const previousPatchTimes = require("./previousPatchDates");
 
 const url = "https://www.dota2.com/datafeed/patchnoteslist";
-const existingPatches = 68;
+const existingPatches = 71;
 const LOADING_TIME = 1500;
 const TIMELINE_LENGTH = 200;
 const testing = process.env.test == "true";
@@ -25,7 +25,7 @@ async function go() {
   var sortedByDate = patches.sort(
     (a, b) => b.patch_timestamp - a.patch_timestamp
   );
-  var threeLatest = sortedByDate.slice(0, 3);
+  var threeLatest = sortedByDate.slice(0, 3).reverse();
   console.log(threeLatest);
   console.log("");
 
@@ -107,15 +107,14 @@ function displayTimeline() {
   console.log(currentSnapshot);
   console.log("^ now");
 
-  console.log(rn(1), "Next historic patches:");
+  console.log(rn(1), "Release time of historic patches:");
 
   for (const i in nextPatches) {
     console.log(
       r(20, " "),
       nextPatches[i].p,
       "in",
-      nextPatches[i].t - nowInMinutes,
-      "minutes"
+      minutesToHourAndMinutes(nextPatches[i].t - nowInMinutes)
     );
   }
   console.log(rn(2));
@@ -133,3 +132,9 @@ go();
 let interval = setInterval(() => {
   go();
 }, 10 * 1000);
+
+function minutesToHourAndMinutes(minutes) {
+  if (minutes < 60) return minutes + " minutes";
+
+  return Math.floor(minutes / 60) + " hours, " + (minutes % 60) + " minutes";
+}
