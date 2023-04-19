@@ -2,6 +2,7 @@
 // prettier-ignore
 module.exports = {
   patches: [
+    { p: "muer", t: 1450 },
     { p: "7.32", t: 1360 },
     { p: "7.31", t: 1416 },
     { p: "7.30", t: 1583 },
