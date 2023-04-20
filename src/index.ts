@@ -132,8 +132,8 @@ function displayTimeline(): void {
   console.log(rn(2));
 }
 
-function negativePatchMessage(): string {
-  return random(negative);
+function negativePatchMessage(messages = negative): string {
+  return random(messages);
 }
 
 function random<T>(list: T[]): T {
@@ -152,7 +152,7 @@ function minutesToHourAndMinutes(minutes: number): string {
 
 main();
 
-module.exports = {
+export {
   go,
   displayTimeline,
   displayPatchFound,
