@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -11,5 +13,8 @@
   "dependencies": {
     "axios": "^0.25.0",
     "play-sound": "^1.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

@@ -1,5 +1,6 @@
 const player = require("play-sound")((opts = {}));
 const colors = require("./colors");
+const axios = require("axios");
 const { negative, positive } = require("./patchResponses");
 const previousPatchTimes = require("./previousPatchDates");
 
@@ -7,8 +8,18 @@ const url = "https://www.dota2.com/datafeed/patchnoteslist";
 const LOADING_TIME = 1500;
 const TIMELINE_LENGTH = 200;
 const testing = process.env.test == "true";
+let interval;
 
 const existingPatches = 77;
+
+const rn = (num) => new Array(num).fill("\n").join("");
+const r = (num, letter) => new Array(num).fill(letter).join("");
+
+function fakeLoading() {
+  return new Promise((resolve) => {
+    setTimeout(resolve, LOADING_TIME);
+  });
+}
 
 async function go() {
   try {
@@ -17,8 +28,8 @@ async function go() {
 
     console.log(colors.FgRed, rn(18) + " PATCH STATUS: LOADING");
 
-    const res = await Promise.all([fetch(url), fakeLoading()]);
-    const json = await res[0].json();
+    const res = await Promise.all([axios.get(url), fakeLoading()]);
+    const json = res[0].data;
 
     process.stdout.write(colors.ClearConsole);
     displayTimeline();
@@ -123,16 +134,18 @@ function random(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-go();
-let interval = setInterval(() => {
+function main() {
+  interval = setInterval(go, 10 * 1000);
   go();
-}, 10 * 1000);
+}
 
 function minutesToHourAndMinutes(minutes) {
   if (minutes < 60) return minutes + " minutes";
 
   return Math.floor(minutes / 60) + " hours, " + (minutes % 60) + " minutes";
 }
+
+main();
 
 module.exports = {
   go,
