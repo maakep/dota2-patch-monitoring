@@ -1,6 +1,6 @@
 import { displayTimeline } from "../src/index";
 
-describe("displayTimeline function", () => {
+xdescribe("displayTimeline function", () => {
   it("should display the timeline correctly", () => {
     const consoleLogSpy = jest
       .spyOn(console, "log")

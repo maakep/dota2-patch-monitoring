@@ -141,13 +141,20 @@ function random<T>(list: T[]): T {
 }
 
 function main(): void {
-  interval = setInterval(go, 10 * 1000);
+  // interval = setInterval(go, 10 * 1000);
   go();
 }
 
 function minutesToHourAndMinutes(minutes: number): string {
-  if (minutes < 60) return minutes + " minutes";
-  return Math.floor(minutes / 60) + " hours, " + (minutes % 60) + " minutes";
+  const hours = Math.floor(minutes / 60);
+  const minutesLeft = minutes % 60;
+
+  // handle negative minutes
+  if (minutes < 0) {
+    return `0h 0m`;
+  }
+
+  return `${hours}h ${minutesLeft}m`;
 }
 
 main();

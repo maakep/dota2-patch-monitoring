@@ -1,4 +1,3 @@
-import PlaySound from "play-sound";
 import {
   go,
   displayTimeline,
@@ -6,6 +5,7 @@ import {
   displayPatchNotFound,
 } from "../src/index";
 
+const PlaySound = require("play-sound");
 const axios = require("axios");
 jest.mock("axios");
 jest.mock("play-sound");

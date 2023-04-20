@@ -1,4 +1,5 @@
 import { negativePatchMessage } from "../src/index";
+import { negative } from "../src/patchResponses";
 
 describe("negativePatchMessage function", () => {
   const messages = ["Message 1", "Message 2", "Message 3"];
@@ -21,6 +22,7 @@ describe("negativePatchMessage function", () => {
   });
 
   it("should return a default message when no negative messages are provided", () => {
-    expect(negativePatchMessage()).toEqual("No new patch found.");
+    const result = negativePatchMessage();
+    expect(negative).toContain(result);
   });
 });
