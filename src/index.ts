@@ -141,7 +141,7 @@ function random<T>(list: T[]): T {
 }
 
 function main(): void {
-  // interval = setInterval(go, 10 * 1000);
+  interval = setInterval(go, 10 * 1000);
   go();
 }
 
