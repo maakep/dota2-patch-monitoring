@@ -1,27 +1,29 @@
-const player = require("play-sound")((opts = {}));
-const colors = require("./colors");
-const axios = require("axios");
-const { negative, positive } = require("./patchResponses");
-const previousPatchTimes = require("./previousPatchDates");
+import axios from "axios";
+import PlaySound from "play-sound";
+import colors from "./colors";
+import { negative, positive } from "./patchResponses";
+import previousPatchTimes from "./previousPatchDates";
+import { Dota } from "./types";
 
+const player = PlaySound({});
 const url = "https://www.dota2.com/datafeed/patchnoteslist";
 const LOADING_TIME = 1500;
 const TIMELINE_LENGTH = 200;
 const testing = process.env.test == "true";
-let interval;
-
+let interval: NodeJS.Timeout;
 const existingPatches = 77;
 
-const rn = (num) => new Array(num).fill("\n").join("");
-const r = (num, letter) => new Array(num).fill(letter).join("");
+const rn = (num: number): string => new Array(num).fill("\n").join("");
+const r = (num: number, letter: string): string =>
+  new Array(num).fill(letter).join("");
 
-function fakeLoading() {
+function fakeLoading(): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(resolve, LOADING_TIME);
   });
 }
 
-async function go() {
+async function go(): Promise<void> {
   try {
     process.stdout.write(colors.ClearConsole);
     displayTimeline();
@@ -29,19 +31,19 @@ async function go() {
     console.log(colors.FgRed, rn(18) + " PATCH STATUS: LOADING");
 
     const res = await Promise.all([axios.get(url), fakeLoading()]);
-    const json = res[0].data;
+    const json = res[0].data as Dota;
 
     process.stdout.write(colors.ClearConsole);
     displayTimeline();
     const patches = json.patches;
-    const sortedByDate = patches.sort(
+    const sortedByDate = patches?.sort(
       (a, b) => b.patch_timestamp - a.patch_timestamp
     );
-    const threeLatest = sortedByDate.slice(0, 3).reverse();
+    const threeLatest = sortedByDate?.slice(0, 3).reverse();
     console.log(threeLatest);
     console.log("");
 
-    if (patches.length > existingPatches || testing) {
+    if ((patches?.length || existingPatches) > existingPatches || testing) {
       displayPatchFound();
     } else {
       displayPatchNotFound();
@@ -51,19 +53,23 @@ async function go() {
   }
 }
 
-function displayPatchFound() {
+function displayPatchFound(): void {
   console.log(colors.FgGreen, `PATCH STATUS: ${positive}`);
   console.log(" " + new Date(Date.now()));
   console.log("");
-  player.play("./files/clip.mp3");
+  player.play("./files/clip.mp3", function (err) {
+    if (err) {
+      console.log("Error playing sound: " + err);
+    }
+  });
   clearInterval(interval);
 }
 
-function displayPatchNotFound() {
+function displayPatchNotFound(): void {
   console.log(colors.FgRed, `PATCH STATUS: ${negativePatchMessage()} `);
 }
 
-function displayTimeline() {
+function displayTimeline(): void {
   const date = new Date();
   const nowInMinutes = date.getHours() * 60 + date.getMinutes();
   const nextPatches = previousPatchTimes.patches
@@ -126,22 +132,21 @@ function displayTimeline() {
   console.log(rn(2));
 }
 
-function negativePatchMessage() {
+function negativePatchMessage(): string {
   return random(negative);
 }
 
-function random(list) {
+function random<T>(list: T[]): T {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-function main() {
+function main(): void {
   interval = setInterval(go, 10 * 1000);
   go();
 }
 
-function minutesToHourAndMinutes(minutes) {
+function minutesToHourAndMinutes(minutes: number): string {
   if (minutes < 60) return minutes + " minutes";
-
   return Math.floor(minutes / 60) + " hours, " + (minutes % 60) + " minutes";
 }
 

@@ -1,6 +1,6 @@
 // patch: minutes from 00:00
 // prettier-ignore
-module.exports = {
+const timeline = {
   patches: [
     { p: "muer", t: 1450 },
     { p: "7.32", t: 1360 },
@@ -15,6 +15,8 @@ module.exports = {
     { p: "7.23", t: 1075 },
   ]
 };
+
+export default timeline;
 
 // V now             7.23      7.24
 // |------------------|--------|-------|--------|--

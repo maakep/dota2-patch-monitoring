@@ -1,4 +1,4 @@
-module.exports = {
+const colors = {
   Reset: "\x1b[0m",
   Bright: "\x1b[1m",
   Dim: "\x1b[2m",
@@ -22,5 +22,7 @@ module.exports = {
   BgMagenta: "\x1b[45m",
   BgCyan: "\x1b[46m",
   BgWhite: "\x1b[47m",
-  ClearConsole: "\033c",
+  ClearConsole: "\x1b[2J\x1b[3J\x1b[H",
 };
+
+export default colors;

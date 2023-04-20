@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node index.ts",
+    "dev": "nodemon --exec ts-node index.ts",
+    "test": ""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^18.15.12",
+    "@types/play-sound": "^1.1.0",
     "axios": "^0.25.0",
-    "play-sound": "^1.1.5"
+    "play-sound": "^1.1.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
